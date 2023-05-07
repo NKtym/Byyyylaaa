@@ -7,7 +7,7 @@
 
 int write_name(struct user* users){
 	printf("Введите ваше имя:");
-	if(scanf(" %s",&users->user_name)!=0)
+	if(scanf(" %s",users->user_name)!=0)
 		return 0;
 	return -1;
 }
@@ -37,10 +37,11 @@ int сonclusion_quest(struct quizz* quiz,int questionCount){
 	return 0;
 }
 
-struct answers answer_quest(struct answers* results,int optionCount,char answer){
+struct answers answer_quest(struct answers* results,int optionCount){
+	char answ;
 	printf("Введите ответ:");
-	scanf(" %c",&answer);
-	results->answer[optionCount]=answer;
+	scanf(" %c",&answ);
+	results->answer[optionCount]=answ;
 	printf("\n");
 	return *results;
 }
@@ -72,7 +73,6 @@ int main(){
 	struct user *data;
 	struct answers *data2;
 	struct quizz *data3;
-	char answer;
 	data = malloc(sizeof(*data));
 	data2 = malloc(sizeof(*data2));
 	data3 = malloc(sizeof(*data3));
@@ -97,7 +97,7 @@ int main(){
 	write_name(data);
 	test_selection(data); 
 	сonclusion_quest(data3,0);
-	answer_quest(data2,0,answer);
+	answer_quest(data2,0);
 	Validation(data3,data2,0,0);
 	percentage_of_completion(data2,data,1);
 	return 0;
