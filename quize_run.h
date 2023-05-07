@@ -15,7 +15,9 @@ struct answers{
 };
 
 
-int write_name(struct user users);
-int test_selection(struct user users);
-int percentage_of_completion(struct answers answer,struct user users);
-struct answers quest(struct quizz* quiz,struct answers results, int questionCount, int optionCount);
+int write_name(struct user* users);
+int test_selection(struct user* users);
+int percentage_of_completion(struct answers* answer,struct user* users,int questionCount);
+int сonclusion_quest(struct quizz* quiz,int questionCount);
+struct answers answer_quest(struct answers* results,int optionCount,char answer);
+int Validation(struct quizz* quiz,struct answers* results,int questionCount,int optionCount);
