@@ -7,9 +7,8 @@
 
 int write_name(struct user* users){
 	printf("Введите ваше имя:");
-	if(scanf(" %s",users->user_name)!=0)
-		return 0;
-	return -1;
+	scanf(" %s",users->user_name);
+	return 0;
 }
 
 int test_selection(struct user* users){
@@ -30,7 +29,7 @@ int test_selection(struct user* users){
 int сonclusion_quest(struct quizz* quiz,int questionCount){
 	printf("Вопрос номер %d \n\n", quiz->question[questionCount].questionNumber+1);
 	printf("%s \n",quiz->question[questionCount].questionText);
-	for (answerOptions* i =quiz->question[questionCount].answerOptions; i->optionLetter!=NULL; i++){
+	for (answerOptions* i =quiz->question[questionCount].answerOptions; i->optionLetter!=0; i++){
 		printf("%c) ",(*i).optionLetter);
 		printf("%s\n",(*i).optionText);
 	}
@@ -94,8 +93,8 @@ int main(){
 		data3->question[i].answerOptions[3].optionText[0]='4';
 		data3->question[i].answerOptions[3].isAnswerRight=0;
 	}
-	write_name(data);
-	test_selection(data); 
+	write_name(data);	
+	test_selection(data);
 	сonclusion_quest(data3,0);
 	answer_quest(data2,0);
 	Validation(data3,data2,0,0);

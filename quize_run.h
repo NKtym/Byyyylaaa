@@ -3,7 +3,7 @@
 #include "quizz_data.h"
 
 struct user{
-	char* user_name;
+	char user_name[100];
 	int num_test;
 	int pass_percentage;
 };
