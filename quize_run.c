@@ -5,6 +5,8 @@
 #include "quize_run.h"
 #include "quizz_data.h"
 
+#define MAX_CNT_ANSWERS 10
+
 int write_name(struct user* users){
 	printf("Введите ваше имя:");
 	scanf(" %s",users->user_name);
@@ -46,7 +48,7 @@ struct answers answer_quest(struct answers* results,int optionCount){
 }
 
 int Validation(struct quizz* quiz,struct answers* results,int questionCount,int optionCount){
-	for(int i=0;i<4;i++){	
+	for(int i=0;i<MAX_CNT_ANSWERS;i++){	
 		if(results->answer[optionCount]==quiz->question[questionCount].answerOptions[i].optionLetter){
 			results->correctness[optionCount]=quiz->question[questionCount].answerOptions[i].isAnswerRight;
 			return 0;
