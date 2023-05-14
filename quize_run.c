@@ -7,16 +7,14 @@
 
 #define MAX_CNT_ANSWERS 10
 
-int write_name(struct user* users){
-	printf("Введите ваше имя:");
-	scanf(" %s",users->user_name);
+int get_username(struct user* users){
+	scanf(" %s",users->username);
 	return 0;
 }
 
-int test_selection(struct user* users){
-	printf("Введите номер теста:");
-	if(scanf("%d",&users->num_test)!=0)
-		return users->num_test;
+int quizz_select(struct user* users){
+	if(scanf("%d",&users->quizzNum)!=0)
+		return users->quizzNum;
 	return -1;
 }
 
@@ -28,9 +26,7 @@ int test_selection(struct user* users){
 }
 */
 
-int сonclusion_quest(struct quizz* quiz,int questionCount){
-	printf("Вопрос номер %d \n\n", quiz->question[questionCount].questionNumber+1);
-	printf("%s \n",quiz->question[questionCount].questionText);
+int print_answer_options(struct quizz* quiz,int questionCount){
 	for (answerOptions* i =quiz->question[questionCount].answerOptions; i->optionLetter!=0; i++){
 		printf("%c) ",(*i).optionLetter);
 		printf("%s\n",(*i).optionText);
@@ -38,19 +34,17 @@ int сonclusion_quest(struct quizz* quiz,int questionCount){
 	return 0;
 }
 
-struct answers answer_quest(struct answers* results,int optionCount){
+struct answers get_answer(struct answers* results,int optionCount){
 	char answ;
-	printf("Введите ответ:");
 	scanf(" %c",&answ);
 	results->answer[optionCount]=answ;
-	printf("\n");
 	return *results;
 }
 
-int Validation(struct quizz* quiz,struct answers* results,int questionCount,int optionCount){
+int check_answers(struct quizz* quiz,struct answers* results,int questionCount,int optionCount){
 	for(int i=0;i<MAX_CNT_ANSWERS;i++){	
 		if(results->answer[optionCount]==quiz->question[questionCount].answerOptions[i].optionLetter){
-			results->correctness[optionCount]=quiz->question[questionCount].answerOptions[i].isAnswerRight;
+			results->isCorrect[optionCount]=quiz->question[questionCount].answerOptions[i].isAnswerRight;
 			return 0;
 		}
 		else
@@ -59,15 +53,36 @@ int Validation(struct quizz* quiz,struct answers* results,int questionCount,int 
 	return -1;
 }
 
-int percentage_of_completion(struct answers* answer,struct user* users,int questionCount){
-	int goodanswers=0;
-	int allquestion=questionCount;
+int get_pass_percentage(struct answers* answer,struct user* users,int questionCount){
+	int goodAnswers=0;
+	int allQuestion=questionCount;
 	for(int i=0; i<100; i++){
-		goodanswers+=answer->correctness[i];
+		goodAnswers+=answer->isCorrect[i];
 	}
-	users->pass_percentage=goodanswers*100/allquestion;
-	printf("Ваш результат:%d\n",users->pass_percentage);
+	users->passPercentage=goodAnswers*100/allQuestion;
+	printf("Ваш результат:%d\n",users->passPercentage);
 	return 0;
+}
+
+struct user passage_quizz(struct answers* answer,struct user* users, struct quizz* quiz){
+	int questionCount=0;
+	int optionCount=0;
+	printf("Введите ваше имя:\n");
+	get_username(users);
+	printf("Введите номер теста:\n");	
+	quizz_select(users);
+	for (question* i=quiz->question; i->questionText[0]!=0; i++){
+		printf("Вопрос номер %d \n", quiz->question[questionCount].questionNumber+1);
+		printf("%s \n",quiz->question[questionCount].questionText);
+		print_answer_options(quiz,questionCount);
+		printf("Введите ответ:\n");
+		get_answer(answer,optionCount);
+		check_answers(quiz,answer,questionCount,optionCount);	
+		optionCount++;
+		questionCount++;
+	}
+	get_pass_percentage(answer,users,questionCount);
+	return *users;
 }
 
 int main(){
@@ -95,11 +110,6 @@ int main(){
 		data3->question[i].answerOptions[3].optionText[0]='4';
 		data3->question[i].answerOptions[3].isAnswerRight=0;
 	}
-	write_name(data);	
-	test_selection(data);
-	сonclusion_quest(data3,0);
-	answer_quest(data2,0);
-	Validation(data3,data2,0,0);
-	percentage_of_completion(data2,data,1);
+	passage_quizz(data2,data,data3);
 	return 0;
 }
